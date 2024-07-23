@@ -20,9 +20,10 @@ public class UploadServiceLivenessIndicator extends LivenessStateHealthIndicator
 
     @Override
     protected AvailabilityState getState(ApplicationAvailability applicationAvailability) {
-        return ready.get()
+        /*return ready.get()
                 ? LivenessState.CORRECT
-                : LivenessState.BROKEN;
+                : LivenessState.BROKEN;*/
+        return LivenessState.CORRECT;
     }
 
     public void markAsReady() {

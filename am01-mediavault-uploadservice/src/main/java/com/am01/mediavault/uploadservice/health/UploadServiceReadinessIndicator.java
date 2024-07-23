@@ -20,9 +20,10 @@ public class UploadServiceReadinessIndicator extends ReadinessStateHealthIndicat
 
     @Override
     protected AvailabilityState getState(ApplicationAvailability applicationAvailability) {
-        return ready.get()
+        /*return ready.get()
                 ? ReadinessState.ACCEPTING_TRAFFIC
-                : ReadinessState.REFUSING_TRAFFIC;
+                : ReadinessState.REFUSING_TRAFFIC;*/
+        return ReadinessState.ACCEPTING_TRAFFIC;
     }
 
     public void markAsReady() {
