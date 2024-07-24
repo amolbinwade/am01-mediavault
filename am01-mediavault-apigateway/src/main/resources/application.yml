@@ -1,0 +1,33 @@
+spring:
+  application:
+    name: am01-mediavault-apigateway
+  main:
+    web-application-type: reactive
+
+  cloud:
+    gateway:
+      routes:
+        - id: uploadservice_route
+          predicates:
+            - Path=/uploadservice/**
+          uri: "http://localhost:8080"
+
+server:
+  port: 8000
+
+logging:
+  level:
+    org.springframework.cloud.gateway: DEBUG
+
+management:
+  endpoint:
+    gateway:
+      enabled: true
+  endpoints:
+    web:
+      exposure:
+        include: gateway
+
+
+
+
