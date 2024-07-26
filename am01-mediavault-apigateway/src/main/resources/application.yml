@@ -10,7 +10,7 @@ spring:
         - id: uploadservice_route
           predicates:
             - Path=/uploadservice/**
-          uri: "http://localhost:8080"
+          uri: ${uploadservice:http://localhost:8080}
 
 server:
   port: 8000

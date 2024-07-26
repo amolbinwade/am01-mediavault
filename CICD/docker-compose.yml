@@ -1,0 +1,16 @@
+version: '3.4'
+
+services:
+  am01-mediavault-apigateway:
+    image: amolbinwade/am01-mediavault-apigateway:latest
+    environment:
+      - uploadservice=http://am01-mediavault-uploadservice:8080
+    ports:
+      - "8000:8000"
+    depends_on:
+      - am01-mediavault-uploadservice
+  
+  am01-mediavault-uploadservice:
+    image: amolbinwade/am01-mediavault-uploadservice:latest
+    expose:
+      - 8080
