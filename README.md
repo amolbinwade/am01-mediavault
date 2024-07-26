@@ -10,3 +10,10 @@ It is based on Java 17, Spring-boot, Docker and AWS. It uses microservices based
 # CICD 
 * **Dockerfile** for each microservice to build docker image of the microservices
 * **Docker-compose** file to deploy the application locally or in Testing environment
+
+# Steps to start application locally
+* Clone the repository.
+* Perform Maven build on each microservice.
+* Build docker images of each microservice using included Dockerfiles.
+* Use CICD/docker-compose.yml to deploy the application locally on Docker engine.
+* OR alternatively start microservices using the IDE (Eclipse, Intellij etc).
