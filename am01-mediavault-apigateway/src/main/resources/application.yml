@@ -12,12 +12,22 @@ spring:
             - Path=/uploadservice/**
           uri: ${uploadservice:http://localhost:8080}
 
+  security:
+    oauth2:
+      client:
+        registration:
+          google:
+            client-id: ${client-id}
+            client-secret: ${client-secret}
+
+
 server:
   port: 8000
 
 logging:
   level:
-    org.springframework.cloud.gateway: DEBUG
+    org.springframework.cloud.gateway: WARN
+    org.springframework.security: TRACE
 
 management:
   endpoint:
