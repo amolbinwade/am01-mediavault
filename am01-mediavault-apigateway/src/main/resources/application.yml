@@ -14,12 +14,15 @@ spring:
 
   security:
     oauth2:
-      client:
-        registration:
-          google:
-            client-id: ${client-id}
-            client-secret: ${client-secret}
-
+#      client:
+#       registration:
+#          google:
+#            client-id:
+#            client-secret:
+      resourceserver:
+        jwt:
+  #        issuer-uri: https://accounts.google.com
+          jwk-set-uri: https://www.googleapis.com/oauth2/v3/certs
 
 server:
   port: 8000

@@ -10,7 +10,8 @@ public class UploadController {
 
 
     @GetMapping("/get")
-    public String get(){
-        return "Hello World from upload-service";
+    public String get() throws Exception {
+        return "Hello from Upload1";
+
     }
 }
