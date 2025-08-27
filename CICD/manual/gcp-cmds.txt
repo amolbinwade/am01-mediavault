@@ -1,0 +1,60 @@
+step#1: enable Artifact Registry API 
+-- install and setup GCP CLI for this first
+gcloud services enable artifactregistry.googleapis.com
+
+step#2: create docker repo
+gcloud artifacts repositories create mediavault-docker-repo \
+  --repository-format=docker \
+  --location=asia-south1 \
+  --description="Docker repo for am01-mediavault images"
+
+step#3: Tag the image for Artifact Registry
+  template : docker tag IMAGE:TAG LOCATION-docker.pkg.dev/PROJECT_ID/REPO/IMAGE:TAG
+  cmd: docker tag amolbinwade/am01-mediavault-apigateway:latest asia-south1-docker.pkg.dev/<PROJECT_ID>/mediavault-docker-repo/am01-mediavault-apigateway:latest
+
+step#4: Configure Docker to authenticate to Artifact Registry
+  template: gcloud auth configure-docker LOCATION-docker.pkg.dev --quiet
+  cmd: gcloud auth configure-docker asia-south1-docker.pkg.dev --quiet
+
+step#5: push the image to GCP repo
+  template: docker push LOCATION-docker.pkg.dev/PROJECT_ID/REPO/IMAGE:TAG
+  cmd: docker push asia-south1-docker.pkg.dev/<PROJECT_ID>/mediavault-docker-repo/am01-mediavault-apigateway:latest
+
+step#6: Make sure the Cloud Run API (and Artifact Registry if needed) are enabled:
+  gcloud services enable run.googleapis.com artifactregistry.googleapis.com
+
+step#7: Deploy the image (single gcloud command)
+This will create a Cloud Run service (or update it if the service already exists):
+gcloud run deploy am01-mediavault-apigateway \
+  --image asia-south1-docker.pkg.dev/<PROJECT_ID>/mediavault-docker-repo/am01-mediavault-apigateway:latest \
+  --platform managed \
+  --region asia-south1 \
+  --allow-unauthenticated \
+  --port 8000 \
+  --memory 256Mi \
+  --cpu 1 \
+  --concurrency 80 \
+  --max-instances 1
+
+  
+step#8: Get the service URL (one-liner)
+After deploy finishes, get the public URL:
+
+gcloud run services describe am01-mediavault-apigateway \
+  --platform managed --region asia-south1 \
+  --format 'value(status.url)'
+
+
+Step#9: Update / redeploy with a new image
+When you push a new image tag, deploy the new image — Cloud Run creates a new revision automatically:
+
+gcloud run deploy am01-mediavault-apigateway \
+  --image asia-south1-docker.pkg.dev/<PROJECT_ID>/mediavault-docker-repo/am01-mediavault-apigateway:v2 \
+  --platform managed --region asia-south1 --allow-unauthenticated
+
+Step#10: 
+Stop / delete the service
+To delete:
+gcloud run services delete am01-mediavault-apigateway --platform managed --region asia-south1
+
+Or scale to zero / disable: Cloud Run already scales to zero automatically; to remove entirely use the delete command above.
