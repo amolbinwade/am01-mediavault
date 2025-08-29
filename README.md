@@ -1,7 +1,7 @@
 # **Am01 Mediavault**
 
 Am01 Mediavault is an application to backup all your media in cloud.
-It is based on Java 17, Spring-boot, Docker and AWS. It uses microservices based architecture.
+It is based on Java 17, Spring-boot, Docker and GCP/AWS. It uses microservices based architecture.
 
 # Components
 * **Spring Cloud API Gateway** based service to act as a single entry point for client requests and authentication. 
