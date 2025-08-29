@@ -7,17 +7,20 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 import reactor.core.publisher.Mono;
 
+import java.util.Map;
+
 @RestController
 public class UserController {
 
     @GetMapping("/me")
-    public Mono<String> me(@AuthenticationPrincipal Jwt jwt) {
-        return Mono.just(jwt.getClaim("email"));
+    public Mono<Map<String, String>> me(@AuthenticationPrincipal Jwt jwt) {
+        return Mono.just(Map.of("username", jwt.getClaim("email")));
     }
 
+    // returns { "username": "email@example.com" }
     @GetMapping("/username")
-    public Mono<String> username(Authentication authentication) {
-        return Mono.just(authentication.getName()); // returns email
+    public Mono<Map<String, String>> username(Authentication authentication) {
+        return Mono.just(Map.of("username", authentication.getName()));
     }
 
 }
