@@ -1,0 +1,25 @@
+use mediavault;
+
+db.createCollection("users", {
+  validator: {
+    $jsonSchema: {
+      bsonType: "object",
+      required: ["_id", "firstName", "lastName", "email", "status", "createdAt", "createdBy"],
+      properties: {
+        _id:       { bsonType: "objectId", description: "Primary key (auto-generated if not provided)" },
+
+        firstName: { bsonType: "string", description: "User's first name" },
+        lastName:  { bsonType: "string", description: "User's last name" },
+        email:     { bsonType: "string", pattern: "^.+@.+$", description: "User email address" },
+        status:    { enum: ["ACTIVE", "INACTIVE", "DELETED"], description: "Account status" },
+
+        createdAt: { bsonType: "date", description: "Creation timestamp" },
+        createdBy: { bsonType: "string", description: "Creator identifier (system/user)" },
+        updatedAt: { bsonType: "date", description: "Last update timestamp" },
+        updatedBy: { bsonType: "string", description: "Last updater identifier" },
+
+        version:   { bsonType: "int", description: "Optimistic locking version number" }
+      }
+    }
+  }
+});

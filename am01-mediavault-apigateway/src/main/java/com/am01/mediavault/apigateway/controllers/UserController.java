@@ -1,5 +1,7 @@
 package com.am01.mediavault.apigateway.controllers;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.oauth2.jwt.Jwt;
@@ -12,15 +14,20 @@ import java.util.Map;
 @RestController
 public class UserController {
 
+    private static final Logger logger = LoggerFactory.getLogger(UserController.class);
+
     @GetMapping("/me")
     public Mono<Map<String, String>> me(@AuthenticationPrincipal Jwt jwt) {
-        return Mono.just(Map.of("username", jwt.getClaim("email")));
+        String username = jwt.getClaim("email");
+        logger.debug("Retrieved email/username: {} ", username);
+        return Mono.just(Map.of("username", username));
     }
 
-    // returns { "username": "email@example.com" }
     @GetMapping("/username")
     public Mono<Map<String, String>> username(Authentication authentication) {
-        return Mono.just(Map.of("username", authentication.getName()));
+        String firstName = authentication.getName();
+        logger.debug("Retrieved First Name: {} ", firstName);
+        return Mono.just(Map.of("username", firstName));
     }
 
 }
