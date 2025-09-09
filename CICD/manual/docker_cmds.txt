@@ -1,0 +1,22 @@
+=============================
+am01-mediavault-mongo-shared
+=============================
+
+1. Build native build using
+./mvnw package "-Dnative" "-Dquarkus.native.container-build=true" `
+  "-Dquarkus.native.builder-image=quay.io/quarkus/ubi-quarkus-mandrel-builder-image:23.1-java17"
+
+
+2. Build docker image locally
+dadocker build -f ./src/main/docker/Dockerfile.native -t amolbinwade/am01-mediavault-mongo-shared-native:latest .
+
+3. Run docker image in container on local docker desktop
+docker run -i --rm -p 8080:8080 amolbinwade/am01-mediavault-mongo-shared-native:latest
+
+
+=======================================
+amolbinwade/am01-mediavault-apigateway
+=======================================
+
+1. Run docker image in container
+docker run -i --rm -p 8080:8080 amolbinwade/am01-mediavault-apigateway:latest

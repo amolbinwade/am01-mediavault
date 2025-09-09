@@ -23,3 +23,34 @@ db.createCollection("users", {
     }
   }
 });
+
+use mediavault;
+
+// Unique index on email (ensures no duplicate accounts)
+db.users.createIndex(
+  { email: 1 },
+  { unique: true, name: "idx_email_unique" }
+);
+
+// Optional: index on status (helps when filtering active users)
+db.users.createIndex(
+  { status: 1 },
+  { name: "idx_status" }
+);
+
+
+# insert sample data
+
+db.users.insertOne({
+  firstName: "Alice",
+  lastName: "Johnson",
+  email: "alice.johnson@example.com",
+  status: "ACTIVE",
+
+  createdAt: new Date(),
+  createdBy: "system-init",
+  updatedAt: new Date(),
+  updatedBy: "system-init",
+
+  version: 1
+});
