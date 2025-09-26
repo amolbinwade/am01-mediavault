@@ -69,7 +69,7 @@ public abstract class BaseRepository<T extends BaseEntity>
      * - If entity has no id, treat as new insert.
      * - If id exists, replaces the document with upsert=true.
      */
-    public Uni<Void> insertOrUpdate(T entity, String actor) {
+    public Uni<T> insertOrUpdate(T entity, String actor) {
         Instant now = Instant.now();
 
         if (entity.id == null) {
@@ -77,7 +77,7 @@ public abstract class BaseRepository<T extends BaseEntity>
             entity.createdAt = now;
             entity.createdBy = actor;
             entity.version = 1;
-            return persist(entity).replaceWithVoid();
+            return persist(entity);
         } else {
             // update existing document
             entity.updatedAt = now;
@@ -88,7 +88,7 @@ public abstract class BaseRepository<T extends BaseEntity>
                     new Document("_id", entity.id),
                     entity,
                     new ReplaceOptions().upsert(true)
-            ).replaceWithVoid();
+            ).map(r -> entity);
         }
     }
 
